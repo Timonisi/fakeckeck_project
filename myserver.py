@@ -18,8 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # установи VK_TOKEN в настройках. Если нет — будет использован хардкод.
 VK_TOKEN = os.getenv(
     "VK_TOKEN",
-    "vk1.a.nEpTSsOymbg8ARvTvsIUTcu2JPLZbGverGMTWCzhksqVk0S7sLRyGJ61oiLq58yyosDdjTuqLc37-4i2EFr9BY1DYzaGo1klpYAgJIeXS3o0vkfAjmyb71e8EAcPNWP4J558fsSpsO2QZfnuqmZSSxajuXdQl7pkj1F0TsGT9nyAZ8uOm2WFp3kU2OQNBFuJMSaBWcMj5PH3NV2jnADugQ"
-)
+    "token")
 VK_APP_SECRET = "Yw1u8Pcq52yXOdagDGOa"
 SUBSCRIPTION_STATUS_URL = os.getenv(
     "SUBSCRIPTION_STATUS_URL",
