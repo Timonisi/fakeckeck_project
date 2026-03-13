@@ -14,12 +14,14 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-# Если хочешь вынести токен в переменные окружения на render.com,
-# установи VK_TOKEN в настройках. Если нет — будет использован хардкод.
-VK_TOKEN = os.getenv(
-    "VK_TOKEN",
-    "token")
-VK_APP_SECRET = "Yw1u8Pcq52yXOdagDGOa"
+
+VK_TOKEN = os.getenv("VK_TOKEN", "").strip()
+VK_APP_SECRET = os.getenv("VK_APP_SECRET", "").strip()
+
+if not VK_TOKEN or VK_TOKEN.lower() in {"token", "changeme"}:
+    raise RuntimeError("VK_TOKEN is not configured. Set VK_TOKEN env var.")
+if not VK_APP_SECRET or VK_APP_SECRET.lower() in {"secret", "changeme"}:
+    raise RuntimeError("VK_APP_SECRET is not configured. Set VK_APP_SECRET env var.")
 SUBSCRIPTION_STATUS_URL = os.getenv(
     "SUBSCRIPTION_STATUS_URL",
     "https://customqr.pythonanywhere.com/subscription/status",

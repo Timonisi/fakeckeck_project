@@ -31,10 +31,14 @@ def apply_cors(response):
     return _add_cors_headers(response)
 
 
-# Replace with your real access key from VK Pay/Subscriptions settings
-ACCESS_KEY = os.getenv('VK_PAY_ACCESS_KEY', 'Yw1u8Pcq52yXOdagDGOa').strip()
-# Secret from mini-app settings is used to validate vk_ launch params coming from the client
-VK_APP_SECRET = os.getenv('VK_APP_SECRET', ACCESS_KEY).strip()
+
+ACCESS_KEY = os.getenv('VK_PAY_ACCESS_KEY', '').strip()
+VK_APP_SECRET = os.getenv('VK_APP_SECRET', '').strip()
+
+if not ACCESS_KEY or ACCESS_KEY.lower() in {'token', 'changeme'}:
+    raise RuntimeError('VK_PAY_ACCESS_KEY is not configured. Set VK_PAY_ACCESS_KEY env var.')
+if not VK_APP_SECRET or VK_APP_SECRET.lower() in {'secret', 'changeme'}:
+    raise RuntimeError('VK_APP_SECRET is not configured. Set VK_APP_SECRET env var.')
 BASE_DIR = Path(__file__).resolve().parent
 SUBSCRIPTIONS_FILE = BASE_DIR / 'subscriptions.json'
 
