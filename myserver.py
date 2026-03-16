@@ -28,10 +28,10 @@ SUBSCRIPTION_STATUS_URL = os.getenv(
 )
 UNLIMITED_ATTEMPTS = 10 ** 9
 
-# Инициализация FastAPI
+
 app = FastAPI()
 
-# CORS (аналогично тому, как было во Flask)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -40,7 +40,7 @@ app.add_middleware(
     max_age=3600,
 )
 
-# Загружаем модель
+
 model = joblib.load("best_fake_real_classifier.pkl")
 
 ATTEMPTS_FILE = "attempts.json"
@@ -162,7 +162,7 @@ def send_vk_message(message: str) -> bool:
         vk = vk_session.get_api()
 
         vk.messages.send(
-            user_id=421965717,  # ID получателя
+            user_id=421965717,  
             message=message,
             random_id=0
         )
@@ -179,7 +179,7 @@ def get_registration_year(user_id, vk):
         response = vk.wall.get(owner_id=user_id, count=1)
 
         if response["count"] == 0:
-            return 2018  # Если у пользователя нет постов, ставим дефолтный год
+            return 2018  
 
         total_posts = response["count"]
         first_post_response = vk.wall.get(owner_id=user_id, count=1, offset=total_posts - 1)
@@ -272,7 +272,7 @@ def get_user_feature_importance(model_, df_user: pd.DataFrame):
     return [(f, df_user.iloc[0][f]) for f in top_features]
 
 
-# ---------------------- ROUTES ---------------------- #
+
 
 
 def _load_attempts():
@@ -341,7 +341,6 @@ def verify_vk_signature(vk_params: dict):
     if not sign:
         return False, None, "sign missing"
 
-    # Берем только vk_* параметры
     items = []
     for key, value in vk_params.items():
         if key.startswith("vk_"):
@@ -513,7 +512,7 @@ async def analyze_user(request: Request):
             print(f"Ошибка поиска пользователя: {e}")
             return JSONResponse({"error": "Пользователь не найден"}, status_code=404)
 
-        # Проверка закрытости аккаунта
+        
         is_closed = is_account_closed(user_id, VK_TOKEN)
         if is_closed is None:
             print("⚠️ Не удалось проверить закрытость аккаунта, продолжаем анализ")
@@ -627,7 +626,7 @@ async def save_additional_answer(request: Request):
         data = await request.json()
         user_id = data.get("user_id")
         check_id = data.get("check_id")
-        answer = data.get("answer")  # 'fake', 'real', 'closed'
+        answer = data.get("answer") 
 
         if not all([user_id, check_id, answer]):
             return JSONResponse({"error": "Не все данные переданы"}, status_code=400)
